@@ -1,0 +1,53 @@
+@import "tailwindcss";
+/* Add this to your main CSS file (index.css/tailwind.css) */
+/* This is a hard reset to ensure scrolling is tracked globally */
+
+html {
+  /* Scroll behavior ko normal rakhein */
+  scroll-behavior: auto !important; 
+}
+
+body {
+  /* Body ko zaroor scrollable banayein */
+  overflow-y: scroll !important; 
+  /* Koi hidden properties na ho */
+  overflow-x: hidden !important; 
+}
+
+/* Framer Motion ke liye hardware acceleration enable karein */
+.motion-div {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+}
+/* ========================================= */
+/* --- START: Horizontal Scroll Marquee CSS --- */
+/* ========================================= */
+
+/* Keyframes for the gradient shift */
+@keyframes gradient-shift {
+  0% { 
+    background-position: 0% 50%; /* Starting position */
+  }
+  50% { 
+    background-position: 100% 50%; /* Middle position (full shift) */
+  }
+  100% { 
+    background-position: 0% 50%; /* Return to start for loop */
+  }
+}
+
+/* Class applied to the scrolling text in HorizontalScroll.jsx */
+.gradient-text {
+  /* Colors adjusted to match the Solarica theme (Orange, Red, Teal, Cyan) */
+  background-image: linear-gradient(90deg, #ff8c00, #ff4500, #10b981, #06b6d4, #ff8c00); 
+  
+  /* Background size ko 4 guna (400%) bada kiya taaki shifting smooth ho */
+  background-size: 400% 400%; 
+  
+  /* Animation ko 15 seconds mein infinite loop mein chalao */
+  animation: gradient-shift 15s ease infinite; 
+}
+
+/* ========================================= */
+/* --- END: Horizontal Scroll Marquee CSS --- */
+/* ========================================= */
