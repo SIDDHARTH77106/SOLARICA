@@ -4,64 +4,57 @@ import gsap from 'gsap';
 const Preloader = ({ onComplete }) => {
   const containerRef = useRef(null);
   const numberRef = useRef(null);
-  const textContainerRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {
-           // Optional: Unmount or hide completely after animation
+           // Animation khatam hone par App ko signal bhejo
            if(onComplete) onComplete(); 
         }
       });
 
       // 1. Counter Animation (0 to 100)
       let loadingProgress = { value: 0 };
+      
       tl.to(loadingProgress, {
         value: 100,
-        duration: 2,
-        ease: "linear",
+        duration: 2.5, // Thoda slow kiya smooth feel ke liye
+        ease: "power2.inOut",
         onUpdate: () => {
           if(numberRef.current) {
-            numberRef.current.textContent = Math.round(loadingProgress.value);
+            numberRef.current.textContent = Math.round(loadingProgress.value) + "%";
           }
-        },
-        onComplete: () => {
-           if(numberRef.current) numberRef.current.textContent = "100";
         }
       });
 
-      // 2. Slide Up Loader
-      tl.to(containerRef.current, {
-        yPercent: -100,
-        duration: 0.8,
-        ease: "power2.inOut",
+      // 2. Text Fade Out & Counter Fade Out
+      tl.to([".char", numberRef.current], {
+        opacity: 0,
+        y: -50,
+        duration: 0.5,
+        ease: "power2.in"
       });
 
-      // 3. Staggered Text Reveal ("HELLO")
-      // We select the spans inside the textContainer
-      tl.from(".char", {
-        y: 200,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.1,
-        ease: "power4.out",
-        delay: 0.2 // Small overlap
-      }, "-=0.5"); // Start slightly before loader finishes moving
+      // 3. Slide Up Loader (Curtain Reveal)
+      tl.to(containerRef.current, {
+        yPercent: -100,
+        duration: 1.2,
+        ease: "power4.inOut",
+      });
 
-    }, containerRef); // Scope selector to this component
+    }, containerRef);
 
     return () => ctx.revert();
   }, [onComplete]);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-50 bg-secondary flex flex-col justify-between p-10">
+    <div ref={containerRef} className="fixed inset-0 z-9999 bg-[#0b120f] text-[#e6e2d6] flex flex-col justify-between p-10 font-sans">
       
-      {/* Hello Text Container */}
-      <div ref={textContainerRef} className="flex justify-center items-center h-full overflow-hidden">
-        {/* We split the text manually for GSAP to grab */}
-        <h1 className="text-[15vw] font-black text-main leading-none flex overflow-hidden">
-          {"HELLO".split("").map((char, index) => (
+      {/* Brand Text Container */}
+      <div className="flex justify-center items-center h-full overflow-hidden absolute inset-0">
+        <h1 className="text-[12vw] md:text-[15vw] font-black leading-none flex overflow-hidden mix-blend-overlay opacity-20 select-none">
+          {"SOLARICA".split("").map((char, index) => (
             <span key={index} className="char inline-block">
               {char}
             </span>
@@ -69,10 +62,10 @@ const Preloader = ({ onComplete }) => {
         </h1>
       </div>
 
-      {/* Loading Number */}
-      <div className="absolute bottom-10 right-10">
-        <span ref={numberRef} className="text-[20vh] font-helvetica font-bold text-main leading-none">
-          0
+      {/* Loading Number (Bottom Right) */}
+      <div className="absolute bottom-10 right-10 z-20 overflow-hidden">
+        <span ref={numberRef} className="block text-[15vh] md:text-[20vh] font-bold text-orange-500 leading-none tracking-tighter">
+          0%
         </span>
       </div>
     </div>

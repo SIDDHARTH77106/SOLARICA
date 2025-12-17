@@ -13,40 +13,47 @@ import HorizontalScroll from '../components/HorizontalScroll';
 
 const HomePage = () => {
   return (
-    <>
+    <div className="overflow-x-hidden bg-[#e6e2d6]"> {/* Global Background & Overflow Fix */}
+      
       <Hero />
-      <AboutStats />
-      <Services />
-      <GroupCompanies />
-      <PMModiSection /> 
-      <Scheme />
-      <Products />
-      <Testimonials />
+      
+      {/* Added spacing between sections for breathing room */}
+      <div className="space-y-0"> 
+        <AboutStats />
+        <Services />
+        <GroupCompanies />
+        <PMModiSection /> 
+        <Scheme />
+        <Products />
+        <Testimonials />
+      </div>
 
-      {/* CTA Section (Home Page ka final section) */}
-      <section className="relative py-32 bg-[#e6e2d6] text-[#0b120f] overflow-hidden">
+      {/* CTA Section - Centered & Professional */}
+      <section className="relative py-32 bg-[#0b120f] text-[#e6e2d6] overflow-hidden">
+        {/* Background Accent */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-teal-900/20 rounded-full blur-[120px] pointer-events-none" />
+
         <div className="container mx-auto px-6 text-center relative z-10">
-          <span className="block text-sm font-bold tracking-[0.2em] uppercase text-teal-900 mb-6">
+          <span className="block text-sm font-bold tracking-[0.2em] uppercase text-teal-500 mb-6">
             Start Your Journey
           </span>
           <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-12 uppercase leading-[0.9]">
-            Ready to <br /><span className="text-teal-800">Switch?</span>
+            Ready to <br /><span className="text-teal-500">Switch?</span>
           </h2>
-          {/* Note: Contact link ab /contact par jayega */}
+          
           <a href="/contact" className="inline-block group"> 
-            <div className="relative overflow-hidden rounded-full bg-[#0b120f] text-[#e6e2d6] px-12 py-6 flex items-center gap-4 transition-all duration-500 hover:scale-105">
+            <div className="relative overflow-hidden rounded-full bg-[#e6e2d6] text-[#0b120f] px-12 py-6 flex items-center gap-4 transition-all duration-500 hover:scale-105 shadow-2xl shadow-teal-900/20">
               <span className="text-xl font-bold uppercase tracking-widest relative z-10">
                 Book Consultation
               </span>
               <ArrowRight className="group-hover:translate-x-2 transition-transform duration-300 relative z-10" />
-              <div className="absolute inset-0 bg-teal-700 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-0"></div>
             </div>
           </a>
         </div>
       </section>
 
       <HorizontalScroll />
-    </>
+    </div>
   );
 };
 

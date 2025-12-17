@@ -1,13 +1,13 @@
 import { Sun, Battery, Zap, PenTool, Truck } from 'lucide-react';
 
-// 💥 FIX 1: navLinks ko Objects mein badla for Router and Anchor Links 💥
+// 💥 UPDATED NAVLINKS 💥
 export const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Products", path: "/#products" }, 
-    { name: "Finance", path: "/#scheme" }, // Scheme section ID use kiya
-    { name: "Projects", path: "/#projects" }, // GroupCompanies section ID use kiya
-    { name: "About Us", path: "/#about" }, // AboutStats section ID use kiya
-    { name: "Contact", path: "/contact" } // Dedicated Route
+  { name: "Home", path: "/" },
+  { name: "Products", path: "/#products" }, 
+  { name: "Finance", path: "/#scheme" }, 
+  { name: "Projects", path: "/#projects" }, 
+  { name: "About Us", path: "/about" }, // <-- YAHAN CHANGE KIYA HAI (Naya Route)
+  { name: "Contact", path: "/contact" } 
 ];
 
 export const companies = [
@@ -18,7 +18,6 @@ export const companies = [
   { title: "Solarica Greenwheels", desc: "Future mobility and green transportation solutions.", icon: Truck },
 ];
 
-// 💥 FIX 2: File paths ko correct kiya (solor -> solar, spaces/brackets removed) 💥
 export const productDetails = [
   // Image 1: Solar Street Lights
   { name: "Solar Street Lights", path: "/solar-street-1.avif", desc: "High-efficiency street lighting." },
