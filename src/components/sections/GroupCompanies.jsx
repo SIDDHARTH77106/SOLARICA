@@ -112,7 +112,7 @@ const GroupCompanies = () => {
               className="company-item shrink-0 w-screen h-screen flex items-end md:items-center justify-center relative px-6 md:px-24 pb-10 md:pb-0"
             >
               {/* Added 'mt-32' to push the entire grid down away from header */}
-              <div className="w-full max-w-[1500px] grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-center mt-32 md:mt-20">
+              <div className="w-full max-w-1500px grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-center mt-32 md:mt-20">
                 
                 {/* --- Content Side --- */}
                 <div className="flex flex-col items-start z-20 order-2 md:order-1 relative">
@@ -163,12 +163,6 @@ const GroupCompanies = () => {
                       alt={co.title} 
                       className="main-image w-[85%] h-[85%] object-contain z-10 drop-shadow-2xl transition-transform duration-700 group-hover:scale-105"
                     />
-
-                    {/* Ghost Number - Fixed: Moved slightly inwards and made text smaller so it doesn't cut
-                    <span className="absolute bottom-2 right-6 text-[8rem] md:text-[14rem] font-black text-[#5ce1e6]/20 leading-none select-none z-0 pointer-events-none">
-                      {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
-                    </span> */}
-
                     <div className="absolute top-6 right-6 flex flex-col gap-4 text-[#5ce1e6]/30">
                         <Globe size={24} className="md:w-8 md:h-8" />
                         <Layers size={24} className="md:w-8 md:h-8" />

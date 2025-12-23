@@ -121,7 +121,7 @@ const Products = () => {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b120f] via-[#0b120f]/60 to-transparent opacity-90 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-[#0b120f] via-[#0b120f]/60 to-transparent opacity-90 transition-opacity duration-500"></div>
               </div>
 
               {/* Big Number Watermark */}

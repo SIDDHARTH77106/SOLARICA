@@ -48,7 +48,7 @@ const Leader = () => (
           <div>
             <h4 className="text-3xl font-bold text-white uppercase tracking-tight mb-2">Prashant Shirode</h4>
             <div className="flex items-center justify-center md:justify-start gap-4">
-                <div className="h-[1px] w-12 bg-[#5ce1e6]"></div>
+                <div className="h-1px w-12 bg-[#5ce1e6]"></div>
                 <p className="text-[#5ce1e6] font-mono tracking-widest uppercase text-xs font-bold">Founder & Director, APS-TECH</p>
             </div>
           </div>

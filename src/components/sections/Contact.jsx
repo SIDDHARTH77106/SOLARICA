@@ -37,7 +37,7 @@ const AnimatedPopHeading = ({ title, subtitle }) => {
           whileInView={{ scale: 1, opacity: 0.12 }}
           transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
           viewport={{ once: true }}
-          className="absolute text-[#5ce1e6] w-72 h-72 md:w-[600px] md:h-[600px] z-0 blur-[100px]"
+          className="absolute text-[#5ce1e6] w-72 h-72 md:w-600px md:h-600px z-0 blur-[100px]"
         >
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             <path fill="currentColor" d={blobPath} transform="translate(100 100)" />
@@ -127,7 +127,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="bg-white/[0.02] border border-white/5 p-12 rounded-[3.5rem] backdrop-blur-3xl shadow-3xl"
+            className="bg-white/0.02 border border-white/5 p-12 rounded-[3.5rem] backdrop-blur-3xl shadow-3xl"
           >
             <form className="space-y-10">
               <div className="space-y-2">
@@ -164,7 +164,7 @@ const Contact = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="relative w-full h-[600px] md:h-[750px] rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group"
+          className="relative w-full h-600px md:h-750px rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group"
         >
           <iframe 
             src={mapEmbedUrl}

@@ -53,35 +53,38 @@ const ClientsAndServices = () => {
     <section 
       ref={containerRef} 
       id="clients" 
-      className="py-32 bg-[#0f1c15] relative overflow-hidden min-h-[95vh] flex flex-col justify-center"
+      // Changed: py-20 for mobile, min-h-screen for better mobile scrolling
+      className="py-20 md:py-32 bg-[#0f1c15] relative overflow-hidden min-h-screen md:min-h-[95vh] flex flex-col justify-center"
     >
       
       {/* --- 1. Cinematic Background (The Industrial Core) --- */}
       <motion.div 
         style={{ y: yBg }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-linear-to-tr from-teal-500/20 via-blue-500/10 to-transparent rounded-full blur-[120px] pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-gradient-to-tr from-teal-500/20 via-blue-500/10 to-transparent rounded-full blur-[120px] pointer-events-none"
       />
       
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-size-[80px_80px] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none"></div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 md:mb-20">
             <SectionHeading title="Trusted by Industry Leaders" subtitle="Our Clients & Services" light={true} />
         </div>
 
-        {/* --- 2. The 3D Composition --- */}
-        <div className="relative w-full max-w-6xl mx-auto h-[600px] md:h-[500px]">
+        {/* --- 2. The 3D Composition Wrapper --- */}
+        {/* RESPONSIVE CHANGE: Flex-col for mobile, Block for desktop */}
+        <div className="relative w-full max-w-6xl mx-auto flex flex-col md:block items-center gap-8 md:h-[550px]">
           
           {/* CENTER PIECE: Global Presence Orb */}
+          {/* Order-2 on mobile so it sits between the cards */}
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.2, type: "spring" }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
+            className="relative md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-0 order-2 md:order-none py-8 md:py-0"
           >
-            <div className="relative">
-                <div className="w-72 h-72 bg-linear-to-b from-teal-500/40 to-blue-900/60 rounded-full shadow-[0_0_120px_rgba(20,184,166,0.3)] flex items-center justify-center backdrop-blur-3xl">
+            <div className="relative transform scale-75 md:scale-100">
+                <div className="w-64 h-64 md:w-72 md:h-72 bg-gradient-to-b from-teal-500/40 to-blue-900/60 rounded-full shadow-[0_0_120px_rgba(20,184,166,0.3)] flex items-center justify-center backdrop-blur-3xl">
                     <Globe size={100} className="text-white/80 animate-pulse-slow" />
                 </div>
                 <div className="absolute inset-0 border border-teal-500/20 rounded-full scale-125 animate-[spin_12s_linear_infinite]"></div>
@@ -91,6 +94,7 @@ const ClientsAndServices = () => {
 
 
           {/* --- LEFT POPUP: Services & Skills --- */}
+          {/* Order-1 on mobile. Relative positioning on mobile. */}
           <motion.div
             custom={0.2}
             initial="hidden"
@@ -99,12 +103,12 @@ const ClientsAndServices = () => {
             animate={floatAnimation}
             drag
             dragConstraints={containerRef}
-            className="absolute top-0 left-0 md:left-5 z-20 w-80 cursor-grab active:cursor-grabbing"
+            className="relative md:absolute md:top-0 md:left-5 z-20 w-full max-w-sm md:w-80 cursor-grab active:cursor-grabbing order-1 md:order-none"
           >
-            <div className="bg-white/5 backdrop-blur-2xl border border-white/10 p-8 rounded-[2.5rem] shadow-3xl group">
+            <div className="bg-white/5 backdrop-blur-2xl border border-white/10 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-3xl group">
                 <div className="flex items-center gap-4 mb-5">
                     <div className="p-3 bg-teal-500/20 rounded-2xl text-teal-400"><Briefcase size={24}/></div>
-                    <h3 className="text-xl font-bold text-white tracking-tight">Our Expertise</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-white tracking-tight">Our Expertise</h3>
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed mb-4">
                   Leveraging technical, linguistic, and commercial skills with years of professional experience.
@@ -117,6 +121,7 @@ const ClientsAndServices = () => {
 
 
           {/* --- RIGHT POPUP: Leading Clients --- */}
+          {/* Order-3 on mobile. Relative positioning on mobile. */}
           <motion.div
             custom={0.4}
             initial="hidden"
@@ -125,13 +130,13 @@ const ClientsAndServices = () => {
             animate={{ ...floatAnimation, transition: { duration: 7, repeat: Infinity, ease: "easeInOut" } }}
             drag
             dragConstraints={containerRef}
-            className="absolute top-10 right-0 md:right-5 z-20 w-80 cursor-grab active:cursor-grabbing"
+            className="relative md:absolute md:top-10 md:right-5 z-20 w-full max-w-sm md:w-80 cursor-grab active:cursor-grabbing order-3 md:order-none"
           >
-            <div className="bg-[#0b120f]/80 backdrop-blur-2xl border border-white/10 p-8 rounded-[2.5rem] shadow-3xl overflow-hidden relative group">
-                <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 to-transparent"></div>
+            <div className="bg-[#0b120f]/80 backdrop-blur-2xl border border-white/10 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-3xl overflow-hidden relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent"></div>
                 <div className="flex items-center gap-4 mb-6">
                     <div className="p-3 bg-blue-500/20 rounded-2xl text-blue-400"><Building2 size={24}/></div>
-                    <h3 className="text-xl font-bold text-white tracking-tight">Top Clients</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-white tracking-tight">Top Clients</h3>
                 </div>
                 <ul className="space-y-3">
                     {leadingClients.map((client, i) => (
@@ -148,27 +153,28 @@ const ClientsAndServices = () => {
 
 
           {/* --- BOTTOM CENTER: Statistics/Trust Badge --- */}
+          {/* Order-4 on mobile. Relative positioning. */}
           <motion.div
             custom={0.6}
             initial="hidden"
             whileInView="visible"
             variants={popUpVariant}
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 z-30"
+            className="relative md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2 z-30 order-4 md:order-none mt-8 md:mt-0 w-full md:w-auto flex justify-center"
           >
-            <div className="flex items-center gap-6 px-10 py-5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full shadow-2xl">
-                <div className="flex -space-x-3">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 px-8 sm:px-10 py-5 bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] sm:rounded-full shadow-2xl w-full sm:w-auto text-center sm:text-left">
+                <div className="flex -space-x-3 justify-center sm:justify-start">
                   {[1,2,3,4].map(i => (
                     <div key={i} className="w-10 h-10 rounded-full border-2 border-[#0f1c15] bg-teal-800 flex items-center justify-center text-[10px] font-bold text-white uppercase">
                       <Users size={14} />
                     </div>
                   ))}
                 </div>
-                <div className="h-8 w-[1px] bg-white/20"></div>
-                <div className="text-left">
+                <div className="hidden sm:block h-8 w-[1px] bg-white/20"></div>
+                <div>
                   <div className="text-white font-bold text-lg leading-none">100% Reliability</div>
-                  <div className="text-gray-500 text-[10px] uppercase tracking-tighter">Professional Turnkey Solutions</div>
+                  <div className="text-gray-500 text-[10px] uppercase tracking-tighter mt-1">Professional Turnkey Solutions</div>
                 </div>
-                <ArrowUpRight className="text-teal-500 ml-4 group-hover:rotate-45 transition-transform" />
+                <ArrowUpRight className="text-teal-500 sm:ml-4 group-hover:rotate-45 transition-transform hidden sm:block" />
             </div>
           </motion.div>
 

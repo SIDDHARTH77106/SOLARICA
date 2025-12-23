@@ -25,12 +25,12 @@ const ReadyToSwitch = () => {
           className="w-full h-full object-cover opacity-10 grayscale"
         />
         {/* Gradient Fades for Smooth Transition */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0b120f] via-transparent to-[#0b120f]"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0b120f] via-transparent to-[#0b120f]"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-[#0b120f] via-transparent to-[#0b120f]"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[#0b120f] via-transparent to-[#0b120f]"></div>
       </div>
 
       {/* 2. Cyan Ambient Glow (3D Effect) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#5ce1e6]/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-500px h-500px bg-[#5ce1e6]/10 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="container mx-auto px-6 text-center relative z-10">
         <motion.div
@@ -47,7 +47,7 @@ const ReadyToSwitch = () => {
           {/* Heading */}
           <h2 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 uppercase leading-[0.85] text-white drop-shadow-2xl">
             Ready to <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5ce1e6] via-white to-[#5ce1e6] italic">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-[#5ce1e6] via-white to-[#5ce1e6] italic">
               TRANSFORM?
             </span>
           </h2>
