@@ -12,27 +12,30 @@ const AboutStats = () => {
   const yHeading = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]); 
 
   return (
-    <section ref={containerRef} id="about" className="py-24 md:py-32 bg-[#e6e2d6] text-[#0f1c15] relative z-20 overflow-hidden">
+    // Background updated to Dark (#0b120f) to match the site theme
+    <section ref={containerRef} id="about" className="py-24 md:py-32 bg-[#0b120f] text-[#e6e2d6] relative z-20 overflow-hidden">
       <div className="container mx-auto px-6">
         
         {/* 1. CENTERED HEADING & TEXT */}
         <div className="text-center max-w-4xl mx-auto mb-24">
             <motion.div style={{ y: yHeading }}>
-                <span className="text-orange-600 font-bold tracking-widest uppercase text-sm mb-4 block">
+                {/* Orange removed -> Logo Cyan */}
+                <span className="text-[#5ce1e6] font-bold tracking-[0.3em] uppercase text-xs mb-6 block font-mono">
                     Who We Are
                 </span>
-                <h2 className="text-5xl md:text-7xl font-light leading-[1.1] mb-8">
+                <h2 className="text-5xl md:text-7xl font-light leading-[1.1] mb-8 text-white">
                   Engineered for <br/>
-                  <span className="font-serif italic font-bold text-[#0f1c15]">Resilience.</span>
+                  {/* Highlight text updated to Logo Cyan */}
+                  <span className="font-serif italic font-bold text-[#5ce1e6]">Resilience.</span>
                 </h2>
-                <p className="text-xl md:text-2xl leading-relaxed font-light text-[#0f1c15]/70 max-w-2xl mx-auto">
-                    Solarica Energy isn't just a manufacturer; we are the architects of a cleaner India. We build systems that withstand time, weather, and demand.
+                <p className="text-xl md:text-2xl leading-relaxed font-light text-white/50 max-w-3xl mx-auto">
+                    APS Tech Enterprises isn't just a manufacturer; we are the architects of industrial precision. We build systems that withstand time, weather, and demand.
                 </p>
             </motion.div>
         </div>
 
         {/* 2. STATS IN A CENTERED GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-[#0f1c15]/10 pt-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-white/10 pt-16">
             {stats.map((stat, idx) => (
                 <motion.div 
                 key={idx}
@@ -42,10 +45,11 @@ const AboutStats = () => {
                 viewport={{ once: true }}
                 className="text-center group"
                 >
-                <h3 className="text-6xl md:text-7xl font-bold text-orange-600 font-serif mb-4 group-hover:scale-110 transition-transform duration-500 inline-block">
+                {/* Stats Number -> Logo Cyan with Glow effect */}
+                <h3 className="text-6xl md:text-7xl font-bold text-[#5ce1e6] font-serif mb-4 group-hover:scale-110 transition-transform duration-500 inline-block drop-shadow-[0_0_15px_rgba(92,225,230,0.4)]">
                     {stat.num}
                 </h3>
-                <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#0f1c15]/60">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-white/40 group-hover:text-white transition-colors">
                     {stat.label}
                 </p>
                 </motion.div>

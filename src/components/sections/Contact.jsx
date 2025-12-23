@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, ShieldCheck, ArrowRight } from 'lucide-react';
 
-// --- 1. SPARKLE/STAR COMPONENT ---
+// --- 1. SPARKLE ANIMATION (Updated to Logo Cyan) ---
 const Sparkle = ({ className, delay }) => (
   <motion.div
     initial={{ scale: 0, opacity: 0, rotate: 0 }}
@@ -17,54 +17,47 @@ const Sparkle = ({ className, delay }) => (
       ease: "easeInOut",
       delay: delay
     }}
-    className={`absolute text-orange-500 ${className}`}
+    className={`absolute text-[#5ce1e6] ${className}`}
   >
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
     </svg>
   </motion.div>
 );
 
-// --- 2. ANIMATED POP HEADING ---
+// --- 2. POP HEADING (Updated Glow & Text Colors) ---
 const AnimatedPopHeading = ({ title, subtitle }) => {
   const blobPath = "M45.7,-51.3C59.9,-38.2,72.3,-20.8,75.6,-1.9C78.9,17,73.1,37.4,60.5,52.1C47.9,66.8,28.4,75.7,8,78.8C-12.4,81.9,-33.7,79.1,-50.4,67.7C-67.1,56.3,-79.2,36.3,-83.5,14.9C-87.9,-6.5,-84.5,-29.3,-71.9,-44.7C-59.4,-60.2,-37.7,-68.3,-18.9,-70.8C-0.2,-73.3,17.5,-70.3,33.5,-62.3Z";
 
   return (
-    <div className="text-center mb-12 relative">
+    <div className="text-center mb-24 relative pt-10">
       <div className="relative flex justify-center items-center py-10">
-        {/* Background Blob */}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 0.5 }}
+          whileInView={{ scale: 1, opacity: 0.12 }}
           transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
           viewport={{ once: true }}
-          className="absolute text-white w-72 h-72 md:w-96 md:h-96 z-0"
+          className="absolute text-[#5ce1e6] w-72 h-72 md:w-[600px] md:h-[600px] z-0 blur-[100px]"
         >
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-sm">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             <path fill="currentColor" d={blobPath} transform="translate(100 100)" />
           </svg>
         </motion.div>
 
-        {/* Stars */}
-        <Sparkle className="-top-2 left-10 md:left-1/4 w-8 h-8" delay={0} />
-        <Sparkle className="bottom-4 right-10 md:right-1/4 w-10 h-10" delay={0.5} />
-        <Sparkle className="top-0 right-1/3 w-6 h-6" delay={1} />
+        <Sparkle className="-top-10 left-[15%] md:left-[25%] w-8 h-8" delay={0} />
+        <Sparkle className="bottom-0 right-[15%] md:right-[25%] w-10 h-10" delay={0.5} />
+        <Sparkle className="top-10 right-1/3 w-6 h-6" delay={1} />
 
-        {/* Text */}
         <motion.h2
-          initial={{ scale: 0.5, y: 50, rotate: -5 }}
-          whileInView={{ scale: 1, y: 0, rotate: 0 }}
-          whileHover={{ 
-            scale: 1.1, 
-            rotate: 2,
-            color: "#ea580c"
-          }}
-          transition={{ type: "spring", stiffness: 200, damping: 12 }}
+          initial={{ scale: 0.5, y: 50 }}
+          whileInView={{ scale: 1, y: 0 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 200, damping: 15 }}
           viewport={{ once: true }}
-          className="relative z-10 text-5xl md:text-7xl font-extrabold uppercase tracking-tighter cursor-pointer select-none text-[#1a1a1a]"
-          style={{ textShadow: '2px 2px 0px rgba(0,0,0,0.05)' }}
+          className="relative z-10 text-6xl md:text-9xl font-black uppercase tracking-tighter text-white leading-tight"
         >
-          {title}
+          {title} <br/> 
+          <span className="text-[#5ce1e6] italic font-serif lowercase tracking-normal">precision</span>
         </motion.h2>
       </div>
 
@@ -73,7 +66,7 @@ const AnimatedPopHeading = ({ title, subtitle }) => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-gray-600 max-w-2xl mx-auto text-lg mt-0 relative z-10"
+          className="text-white/40 max-w-2xl mx-auto text-lg md:text-2xl font-light relative z-10 px-6"
       >
           {subtitle}
       </motion.p>
@@ -81,156 +74,145 @@ const AnimatedPopHeading = ({ title, subtitle }) => {
   );
 };
 
-// --- 3. MAIN CONTACT COMPONENT ---
-const containerVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: "spring", stiffness: 80, delayChildren: 0.3, staggerChildren: 0.2 }
-  }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30, rotateX: 10 },
-    visible: { opacity: 1, y: 0, rotateX: 0 }
-}
-
+// --- 3. MAIN CONTACT COMPONENT (Themed Blue/Cyan) ---
 const Contact = () => {
-    
-    // Website Theme Colors
-    const CONTACT_BG = "#EAE8E1"; 
-    const ACCENT_COLOR = "text-orange-600";
-    const SHADOW_COLOR = "rgba(0, 0, 0, 0.1)";
-    
-    const countries = ["India", "United States", "Germany", "Japan", "Other"];
+  const COMPANY_DATA = {
+    name: "Prashant Shirode",
+    phone: "+91 8793566741",
+    email: "info@apstechent.com",
+    gst: "27CKZPM6987K1ZQ",
+    address: "Shed No. 1, Behind Wadekar Industrial Estate, Near Abhinav College, Narhe, Pune-411041"
+  };
 
-    return (
-        <section id="contact" className={`py-16 text-[#1a1a1a] overflow-hidden`} style={{ backgroundColor: CONTACT_BG }}>
-            <div className="container mx-auto px-6">
-                
-                <AnimatedPopHeading 
-                    title="Get in Touch" 
-                    subtitle="Thanks for your interest in Solarica. We'll connect you with the right person." 
-                />
+  const mapEmbedUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.81432422791!2d73.818318!3d18.4467551!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2950555555555%3A0x0!2zMTjCsDI2JzQ4LjMiTiA3M8KwNDknMDUuOSJF!5e0!3m2!1sen!2sin!4v1713432000000!5m2!1sen!2sin`;
 
-                <motion.div 
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.3 }}
-                    // Gap reduced to gap-8 to fix spacing issues
-                    className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
-                >
-                    
-                    {/* LEFT: Form Container */}
-                    <motion.div 
-                        variants={itemVariants}
-                        style={{ transformStyle: 'preserve-3d' }}
-                        whileHover={{ y: -5, rotateX: 1, boxShadow: `0 18px 36px ${SHADOW_COLOR}` }}
-                        className="p-8 md:p-10 bg-white rounded-4xl shadow-xl border border-white/50 relative z-10 h-full"
-                    >
-                        <h3 className="text-3xl font-bold mb-2 text-orange-600">Send a Message</h3>
-                        <p className="text-sm text-gray-500 mb-8">Please provide the following information...</p>
-                        
-                        <form className="space-y-6">
-                            
-                            {/* "About You" heading REMOVED */}
-                            {/* Inquiry Type section REMOVED */}
+  return (
+    <section id="contact" className="relative bg-[#0b120f] pb-40 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-10 md:px-20 lg:px-32">
+        
+        <AnimatedPopHeading 
+          title="Engineering"
+          subtitle="Full-scale metal fabrication and assembly services with an emphasis on innovation."
+        />
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <input type="text" required placeholder="First Name*" className="p-4 border border-gray-200 bg-[#f9f9f9] rounded-xl focus:border-orange-500 transition"/>
-                                <input type="text" required placeholder="Last Name*" className="p-4 border border-gray-200 bg-[#f9f9f9] rounded-xl focus:border-orange-500 transition"/>
-                            </div>
-                            
-                            <input type="email" required placeholder="Email Address*" className="w-full p-4 border border-gray-200 bg-[#f9f9f9] rounded-xl focus:border-orange-500 transition"/>
-                            <input type="tel" placeholder="Phone Number" className="w-full p-4 border border-gray-200 bg-[#f9f9f9] rounded-xl focus:border-orange-500 transition"/>
-                            <input type="text" placeholder="Company/Organization*" className="w-full p-4 border border-gray-200 bg-[#f9f9f9] rounded-xl focus:border-orange-500 transition"/>
-                            
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Country/Region*</label>
-                                <select required className="w-full p-4 border border-gray-200 bg-[#f9f9f9] rounded-xl focus:border-orange-500 transition appearance-none">
-                                    <option value="">Select a value</option>
-                                    {countries.map(country => <option key={country} value={country}>{country}</option>)}
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">How can we help you?*</label>
-                                <textarea required placeholder="Briefly describe your requirements..." rows="4" className="w-full p-4 border border-gray-200 bg-[#f9f9f9] rounded-xl focus:border-orange-500 transition"></textarea>
-                            </div>
-
-                            <div className="flex items-start pt-2">
-                                <input id="privacy-check" type="checkbox" required className="mt-1 w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500" />
-                                <label htmlFor="privacy-check" className="ml-3 text-sm text-gray-600">I agree to the privacy policy.</label>
-                            </div>
-                            
-                            <motion.button 
-                                type="submit"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="w-full flex items-center justify-center gap-3 bg-orange-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-orange-700 transition mt-2"
-                            >
-                                Submit <ArrowRight size={18}/>
-                            </motion.button>
-                        </form>
-                    </motion.div>
-
-                    {/* RIGHT: Floating Info/Map Container */}
-                    <motion.div 
-                        variants={itemVariants}
-                        style={{ transformStyle: 'preserve-3d' }}
-                        className="p-8 md:p-10 bg-white rounded-4xl shadow-xl border border-white/50 flex flex-col justify-between relative z-10 h-full"
-                    >
-                        <div>
-                            <h3 className="text-3xl font-bold mb-8">Contact Information</h3>
-                            
-                            <div className="space-y-6">
-                                <ContactDetail icon={Mail} title="Email Address" value="info@solarica.com" accent={ACCENT_COLOR}/>
-                                <ContactDetail icon={Phone} title="Phone Number" value="+91 98765 43210" accent={ACCENT_COLOR}/>
-                                <ContactDetail icon={MapPin} title="Our Location" value="Solarica HQ, Pune, India" accent={ACCENT_COLOR}/>
-                            </div>
-                        </div>
-
-                        {/* MAP SECTION - Height increased to fill vertical gap */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.5 }}
-                            className="mt-10 h-80 w-full bg-gray-100 rounded-xl overflow-hidden relative shadow-inner border border-gray-200"
-                        >
-                            <iframe 
-                                width="100%" 
-                                height="100%" 
-                                frameBorder="0" 
-                                scrolling="no" 
-                                marginHeight="0" 
-                                marginWidth="0" 
-                                title="Solarica Location"
-                                src="https://maps.google.com/maps?q=Pune,Maharashtra&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                                className="absolute inset-0 w-full h-full grayscale hover:grayscale-0 transition-all duration-500"
-                            ></iframe>
-                        </motion.div>
-
-                    </motion.div>
-
-                </motion.div>
+        <div className="grid lg:grid-cols-2 gap-20 lg:gap-40 mb-32 items-start">
+          
+          {/* Left: Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-4xl md:text-6xl font-bold mb-10 tracking-tight leading-tight">
+              Let's discuss <br/> your next project.
+            </h3>
+            
+            <div className="inline-flex items-center gap-4 bg-white/5 border border-white/10 px-8 py-4 rounded-full mb-12">
+              <ShieldCheck size={20} className="text-[#5ce1e6]" />
+              <div className="flex flex-col">
+                <span className="text-[9px] uppercase tracking-[0.3em] text-white/30">Verified Entity</span>
+                <span className="text-sm font-mono font-bold text-white/80 uppercase">GST: {COMPANY_DATA.gst}</span>
+              </div>
             </div>
-        </section>
-    );
+
+            <div className="space-y-8">
+               <ContactItem icon={<Phone size={20}/>} title="Direct Line" value={COMPANY_DATA.phone} link={`tel:${COMPANY_DATA.phone}`} sub={COMPANY_DATA.name} />
+               <ContactItem icon={<Mail size={20}/>} title="Official Inquiry" value={COMPANY_DATA.email} link={`mailto:${COMPANY_DATA.email}`} sub="Support Team" />
+            </div>
+          </motion.div>
+
+          {/* Right: Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="bg-white/[0.02] border border-white/5 p-12 rounded-[3.5rem] backdrop-blur-3xl shadow-3xl"
+          >
+            <form className="space-y-10">
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-[0.2em] text-white/20 ml-1">Full Name</label>
+                <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-[#5ce1e6] transition-all text-white text-lg" placeholder="Enter your name" required />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-[0.2em] text-white/20 ml-1">Email Address</label>
+                <input type="email" className="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-[#5ce1e6] transition-all text-white text-lg" placeholder="yourname@example.com" required />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-[0.2em] text-white/20 ml-1">Contact Number</label>
+                <input type="tel" className="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-[#5ce1e6] transition-all text-white text-lg" placeholder="+91" required />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-[0.2em] text-white/20 ml-1">Message</label>
+                <textarea rows="2" className="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-[#5ce1e6] transition-all text-white text-lg resize-none" placeholder="Share your project details..." required></textarea>
+              </div>
+
+              {/* Button updated to Cyan with Black text for contrast */}
+              <button className="group w-full bg-[#5ce1e6] text-black py-6 rounded-full font-black uppercase tracking-widest transition-all hover:bg-white hover:text-black flex items-center justify-center gap-4 text-sm shadow-xl shadow-[#5ce1e6]/20">
+                Submit Request <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
+              </button>
+            </form>
+          </motion.div>
+        </div>
+
+        {/* Map Section */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="relative w-full h-[600px] md:h-[750px] rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group"
+        >
+          <iframe 
+            src={mapEmbedUrl}
+            width="100%" 
+            height="100%" 
+            style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)' }} 
+            allowFullScreen="" 
+            loading="lazy" 
+          />
+
+          <div className="absolute bottom-12 left-12 md:left-20 z-20 max-w-sm">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-[#0b120f]/90 backdrop-blur-3xl p-10 rounded-[3rem] border border-white/10 shadow-4xl"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-2 h-2 rounded-full bg-[#5ce1e6] animate-pulse" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#5ce1e6]">Workshop Location</span>
+              </div>
+              <p className="text-white/80 leading-relaxed text-base font-light mb-6">
+                {COMPANY_DATA.address}
+              </p>
+              <div className="flex items-center gap-4 text-[10px] text-white/30 uppercase tracking-widest border-t border-white/5 pt-6">
+                  <MapPin size={14} /> Pune, Maharashtra
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+      </div>
+    </section>
+  );
 };
 
-// Reusable Detail Component
-const ContactDetail = ({ icon: Icon, title, value, accent }) => (
-    <div className="flex items-start space-x-4">
-        <div className={`w-10 h-10 flex items-center justify-center rounded-full bg-orange-500/10 ${accent}`}>
-            <Icon size={18} />
-        </div>
-        <div>
-            <p className="text-sm font-medium text-gray-500">{title}</p>
-            <p className="text-lg font-bold text-[#1a1a1a]">{value}</p>
-        </div>
+// Sub-component (Updated Icon & Text Hover Colors)
+const ContactItem = ({ icon, title, value, link, sub }) => (
+  <a href={link} className="flex items-center gap-6 group">
+    <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-[#5ce1e6] group-hover:bg-[#5ce1e6] group-hover:text-black transition-all duration-500 shadow-lg">
+      {icon}
     </div>
+    <div>
+      <p className="text-[10px] uppercase tracking-widest text-white/20 mb-1">{title}</p>
+      <p className="text-xl font-bold group-hover:text-[#5ce1e6] transition-colors">{value}</p>
+      {sub && <p className="text-xs text-white/30 font-medium">{sub}</p>}
+    </div>
+  </a>
 );
 
 export default Contact;

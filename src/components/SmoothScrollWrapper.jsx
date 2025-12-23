@@ -3,8 +3,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef } from 'react';
 
-// Connect Lenis to GSAP ScrollTrigger
-// (Ye step zaroori hai taaki animations aur scroll perfect sync mein rahein)
+
+gsap.registerPlugin(ScrollTrigger);
+
 function SmoothScrollWrapper({ children }) {
   const lenisRef = useRef();
 
@@ -14,6 +15,8 @@ function SmoothScrollWrapper({ children }) {
     }
 
     gsap.ticker.add(update);
+
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       gsap.ticker.remove(update);
@@ -25,9 +28,12 @@ function SmoothScrollWrapper({ children }) {
       ref={lenisRef}
       root
       options={{
-        lerp: 0.1, // Smoothness (Lower = Smoother/Slower)
-        duration: 1.5,
-        smoothTouch: true, // Mobile pe bhi smooth karega
+ 
+        lerp: 0.07,         
+        duration: 1.2,     
+        smoothTouch: true,  
+        touchMultiplier: 1.5, 
+        wheelMultiplier: 1, 
       }}
     >
       {children}

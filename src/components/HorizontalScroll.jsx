@@ -4,96 +4,98 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// CSS for gradient animation (Aapko yeh CSS file mein ya style tag mein add karna hoga)
-/* @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.gradient-text {
-  background-image: linear-gradient(90deg, #ff8c00, #ff4500, #10b981, #06b6d4, #ff8c00);
-  background-size: 400% 400%;
-  animation: gradient-shift 15s ease infinite;
-}
-*/
-
 const HorizontalScroll = () => {
   const firstText = useRef(null);
   const secondText = useRef(null);
   const slider = useRef(null);
-  
-  let xPercent = 0;
-  let direction = -1; // -1 = Left (Auto scroll direction)
-  
-  // Speed of the automatic marquee
-  const speed = 0.05;
+  const requestRef = useRef(null); 
 
-  useEffect(() => {
-    requestAnimationFrame(animate);
-  }, []);
+  let xPercent = 0;
+  let direction = -1; 
+  const speed = 0.08; 
 
   const animate = () => {
-    // Loop boundary checks
+    if (!firstText.current || !secondText.current) return;
+
     if (xPercent < -100) {
       xPercent = 0;
     } else if (xPercent > 0) {
       xPercent = -100;
     }
     
-    // GSAP sets text position
     gsap.set(firstText.current, { xPercent: xPercent });
     gsap.set(secondText.current, { xPercent: xPercent });
     
-    requestAnimationFrame(animate);
-    
-    // Constant speed update (for auto-movement)
     xPercent += speed * direction;
+    requestRef.current = requestAnimationFrame(animate);
   };
 
-  // --- SYNC WITH SCROLL (Velocity Effect) ---
-  // Jab user scroll karega, to animation tez/dheemi hogi ya direction badlegi
   useEffect(() => {
-    gsap.to(slider.current, {
-      scrollTrigger: {
-        trigger: document.documentElement,
-        scrub: 0.25, 
-        start: 0,
-        end: window.innerHeight,
-        onUpdate: e => {
-          // Scroll direction ke hisaab se auto-move direction change karna
-          // e.direction * -1 ka matlab: agar user neeche scroll kare (1), to text left (-1) move kare.
-          direction = e.direction * -1;
-        }
-      },
-      x: "-=300px", // Dummy movement
-    });
+    requestRef.current = requestAnimationFrame(animate);
+
+    let ctx = gsap.context(() => {
+      // 1. टेक्स्ट को दाएं-बाएं स्क्रोल करने वाला एनीमेशन
+      gsap.to(slider.current, {
+        scrollTrigger: {
+          trigger: document.documentElement,
+          scrub: 0.25, 
+          start: 0,
+          end: window.innerHeight,
+          onUpdate: e => {
+            direction = e.direction * -1;
+          }
+        },
+        x: "-=300px", 
+      });
+
+      // 2. --- MULTI-COLOR CHANGING EFFECT ---
+      // यह एनीमेशन टेक्स्ट के अंदर रंगों को घुमाएगा
+      gsap.to(".changing-gradient", {
+        backgroundPosition: "200% center",
+        duration: 8,
+        ease: "none",
+        repeat: -1,
+      });
+
+    }, slider);
+
+    return () => {
+      ctx.revert(); 
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+    };
   }, []);
 
+  const marqueeText = "Metal Fabrication • Special Purpose Machines • Robotics & Automation • Sheet Metal Products • LED X-Ray View Box • Aluminum Enclosures • Injection Molding • ";
+
   return (
-    <section className="relative h-[40vh] bg-[#0f1c15] overflow-hidden flex items-center">
+    <section className="relative h-[25vh] md:h-[40vh] bg-[#0f1712] overflow-hidden flex items-center border-y border-white/5">
       
-      {/* Container holding the text */}
       <div ref={slider} className="relative whitespace-nowrap">
         
         {/* FIRST COPY */}
         <p 
           ref={firstText} 
-          // Text size reduced to 15vh/20vh
-          // Gradient classes added
-          className="relative m-0 text-[15vh] md:text-[20vh] font-sans font-black uppercase leading-none tracking-tighter pr-10 inline-block text-transparent bg-clip-text gradient-text"
+          className="changing-gradient relative m-0 text-[12vh] md:text-[22vh] font-sans font-black uppercase leading-none tracking-tighter pr-12 inline-block italic text-transparent bg-clip-text bg-size-200"
+          style={{
+            backgroundImage: 'linear-gradient(to right, #f97316, #00f2ff, #f97316, #00f2ff)',
+            backgroundSize: '200% auto'
+          }}
         >
-          Innovation • Strategy • Design • Future •
+          {marqueeText}
         </p>
 
-        {/* SECOND COPY (For seamless Loop) */}
+        {/* SECOND COPY */}
         <p 
           ref={secondText} 
-          // Text size reduced to 15vh/20vh
-          // Gradient classes added
-          className="absolute left-full top-0 m-0 text-[15vh] md:text-[20vh] font-sans font-black uppercase leading-none tracking-tighter pr-10 inline-block text-transparent bg-clip-text gradient-text"
+          className="changing-gradient absolute left-full top-0 m-0 text-[12vh] md:text-[22vh] font-sans font-black uppercase leading-none tracking-tighter pr-12 inline-block italic text-transparent bg-clip-text bg-size-200"
+          style={{
+            backgroundImage: 'linear-gradient(to right, #f97316, #00f2ff, #f97316, #00f2ff)',
+            backgroundSize: '200% auto'
+          }}
         >
-          Innovation • Strategy • Design • Future •
+          {marqueeText}
         </p>
 
       </div>

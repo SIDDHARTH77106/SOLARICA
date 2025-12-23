@@ -2,53 +2,82 @@ import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { companies } from '../../data/constants'; 
-import SectionHeading from '../ui/SectionHeading';
-import { ArrowUpRight, Globe, Layers } from 'lucide-react';
+import { ArrowUpRight, Globe, Layers, Zap, Shield } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const GroupCompanies = () => {
   const containerRef = useRef(null);
   const triggerRef = useRef(null);
-  const stripRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      
       const sections = gsap.utils.toArray(".company-item");
-      const totalSections = sections.length;
       
-      // Horizontal Scroll Tween
       const scrollTween = gsap.to(sections, {
-        xPercent: -100 * (totalSections - 1),
+        xPercent: -100 * (sections.length - 1),
         ease: "none",
         scrollTrigger: {
           trigger: triggerRef.current,
           pin: true,
           scrub: 1, 
           end: () => "+=" + triggerRef.current.offsetWidth * 3, 
-          snap: 1 / (totalSections - 1), 
+          snap: {
+            snapTo: 1 / (sections.length - 1),
+            duration: { min: 0.2, max: 0.5 },
+            delay: 0.1,
+            ease: "power1.inOut"
+          }, 
         }
       });
 
-      // --- PARALLAX EFFECT ---
       sections.forEach((section) => {
-        const visual = section.querySelector(".parallax-visual");
-        
-        gsap.fromTo(visual, 
-          { xPercent: -20 },
+        const titleWords = section.querySelectorAll(".title-word");
+        const imageFrame = section.querySelector(".image-frame");
+        const desc = section.querySelector(".desc-text");
+        const tags = section.querySelector(".tags-container");
+
+        gsap.from(titleWords, {
+          y: 60,
+          opacity: 0,
+          rotation: 2,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            containerAnimation: scrollTween,
+            start: "left center",
+          }
+        });
+
+        gsap.fromTo(imageFrame, 
+          { clipPath: "inset(10% 10% 10% 10% round 3rem)", scale: 0.95, opacity: 0 },
           { 
-            xPercent: 20, 
-            ease: "none",
+            clipPath: "inset(0% 0% 0% 0% round 3rem)", 
+            scale: 1,
+            opacity: 1,
+            duration: 1.2,
+            ease: "expo.out",
             scrollTrigger: {
               trigger: section,
-              containerAnimation: scrollTween, 
-              start: "left right",
-              end: "right left",
-              scrub: true,
+              containerAnimation: scrollTween,
+              start: "left center+=100",
             }
           }
         );
+
+        gsap.from([tags, desc], {
+            x: -30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: section,
+              containerAnimation: scrollTween,
+              start: "left center",
+            }
+        });
       });
 
     }, containerRef);
@@ -57,82 +86,93 @@ const GroupCompanies = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="bg-[#e8e4dc] text-[#0f1c15] overflow-hidden relative">
+    <section ref={containerRef} className="bg-[#0b120f] text-[#e6e2d6] overflow-hidden relative">
       
       <div ref={triggerRef} className="h-screen flex flex-col relative">
         
-        {/* Header - Fixed Position with High Z-Index */}
-        <div className="absolute top-8 left-6 md:left-24 z-20 pointer-events-none mix-blend-multiply">
-           <SectionHeading title="Selected Works" subtitle="Our Ecosystem" light={false} />
+        {/* --- CUSTOM HEADER (Fixed at Top) --- */}
+        <div className="absolute top-8 left-8 md:left-24 z-40 bg-[#0b120f]/80 backdrop-blur-sm pr-10 pb-4 rounded-br-2xl">
+            <div className="flex flex-col items-start">
+               <span className="text-[#5ce1e6] font-mono tracking-[0.4em] uppercase text-xs mb-2 block">
+                  Our Ecosystem
+               </span>
+               <h2 className="text-4xl md:text-5xl font-bold text-white uppercase tracking-tighter">
+                  Selected Works
+               </h2>
+               {/* Cyan Line */}
+               <div className="h-1 w-24 bg-[#5ce1e6] mt-4 rounded-full"></div>
+            </div>
         </div>
 
-        {/* The Moving Horizontal Strip */}
-        <div ref={stripRef} className="flex h-full items-center">
-          
+        {/* Horizontal Strip */}
+        <div className="flex h-full items-center">
           {companies.map((co, idx) => (
             <div 
               key={idx} 
-              className="company-item shrink-0 w-screen h-screen flex items-center justify-center relative overflow-hidden px-4 md:px-24"
+              className="company-item shrink-0 w-screen h-screen flex items-end md:items-center justify-center relative px-6 md:px-24 pb-10 md:pb-0"
             >
-              {/* Added pt-24 (padding top) to prevent overlap with header */}
-              <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center pt-24 md:pt-0">
+              {/* Added 'mt-32' to push the entire grid down away from header */}
+              <div className="w-full max-w-[1500px] grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-center mt-32 md:mt-20">
                 
-                {/* 1. Left: Typography */}
-                <div className="parallax-text flex flex-col items-start z-10 order-2 md:order-1">
+                {/* --- Content Side --- */}
+                <div className="flex flex-col items-start z-20 order-2 md:order-1 relative">
                   
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-3 mb-6">
-                    <span className="px-4 py-1.5 border border-teal-900/80 rounded-full text-xs md:text-sm font-bold uppercase tracking-widest text-teal-900">
-                      Strategy
+                  {/* Tags: Gap increased */}
+                  <div className="tags-container flex flex-wrap gap-3 mb-8">
+                    <span className="flex items-center gap-2 px-4 py-2 bg-[#5ce1e6]/5 border border-[#5ce1e6]/30 rounded-full text-[10px] font-bold uppercase tracking-widest text-[#5ce1e6]">
+                      <Zap size={12} /> Technology
                     </span>
-                    <span className="px-4 py-1.5 border border-teal-900/80 rounded-full text-xs md:text-sm font-bold uppercase tracking-widest text-teal-900">
-                      Innovation
+                    <span className="flex items-center gap-2 px-4 py-2 bg-[#5ce1e6]/5 border border-[#5ce1e6]/30 rounded-full text-[10px] font-bold uppercase tracking-widest text-[#5ce1e6]">
+                      <Shield size={12} /> Precision
                     </span>
                   </div>
 
-                  {/* Title - Optimized Font Size */}
-                  <h2 className="text-5xl md:text-7xl lg:text-8xl leading-[0.9] font-black tracking-tighter text-teal-950 mb-6 uppercase">
-                    {co.title}
+                  {/* Title */}
+                  <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-6 uppercase leading-[0.9] overflow-hidden">
+                    {co.title.split(' ').map((word, i) => (
+                      <span key={i} className="title-word inline-block mr-3 md:mr-5">{word}</span>
+                    ))}
                   </h2>
 
                   {/* Description */}
-                  <p className="text-lg md:text-xl text-gray-700 font-medium leading-relaxed max-w-lg mb-8 md:mb-10">
+                  <p className="desc-text text-lg md:text-xl text-white/50 font-light leading-relaxed max-w-lg mb-10 border-l-2 border-[#5ce1e6] pl-6">
                     {co.desc}
                   </p>
 
-                  {/* Big CTA Button */}
-                  <button className="group flex items-center gap-4 md:gap-6 text-sm md:text-lg font-bold uppercase tracking-wide text-white bg-teal-900 px-8 py-4 md:px-10 md:py-5 rounded-full hover:bg-teal-800 transition-all duration-300">
-                    Explore Case
-                    <ArrowUpRight className="group-hover:rotate-45 transition-transform duration-300" />
+                  {/* Button */}
+                  <button className="group relative flex items-center gap-4 text-xs font-black uppercase tracking-[0.2em] text-black bg-[#5ce1e6] px-8 py-4 md:px-10 md:py-5 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(92,225,230,0.3)]">
+                    <span className="relative z-10">View Case Study</span>
+                    <ArrowUpRight className="relative z-10 group-hover:rotate-45 transition-transform duration-500" size={16} />
+                    <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                   </button>
                 </div>
 
-                {/* 2. Right: Visual Block */}
-                <div className="relative h-[35vh] md:h-[60vh] w-full flex items-center justify-center order-1 md:order-2 mb-4 md:mb-0">
+                {/* --- Image Side --- */}
+                <div className="relative group w-full h-[35vh] md:h-[65vh] order-1 md:order-2 flex items-center justify-center">
                   
-                  <div className="parallax-visual w-full h-full bg-teal-900 relative overflow-hidden rounded-4xl md:rounded-[4rem] flex items-center justify-center shadow-2xl shadow-teal-900/20">
+                  <div className="image-frame relative w-full h-full bg-[#14201a] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 flex items-center justify-center">
                     
-                    {/* Background Pattern */}
-                    <div className="absolute inset-0 bg-linear-to-br from-teal-800 to-black opacity-40"></div>
-                    
-                    {/* Giant Icon */}
-                    <div className="relative z-10 text-[#e8e4dc] transform transition-transform duration-700 hover:scale-110">
-                      {/* Responsive Icon Size */}
-                      <co.icon strokeWidth={1} className="w-24 h-24 md:w-48 md:h-48" />
+                    {/* Background Grid */}
+                    <div className="absolute inset-0 opacity-[0.05]" 
+                         style={{ backgroundImage: 'linear-gradient(#5ce1e6 1px, transparent 1px), linear-gradient(90deg, #5ce1e6 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
                     </div>
 
-                    {/* Floating Decorative Elements */}
-                    <div className="absolute top-10 right-10 text-white/20 hidden md:block">
-                      <Globe size={120} />
-                    </div>
-                      <div className="absolute bottom-10 left-10 text-white/20 hidden md:block">
-                      <Layers size={120} />
-                    </div>
+                    {/* Main Image */}
+                    <img 
+                      src={`/${co.image}`} 
+                      alt={co.title} 
+                      className="main-image w-[85%] h-[85%] object-contain z-10 drop-shadow-2xl transition-transform duration-700 group-hover:scale-105"
+                    />
 
-                    {/* Number */}
-                    <span className="absolute bottom-4 right-6 md:bottom-8 md:right-12 text-6xl md:text-9xl font-black text-white/10 select-none">
-                      0{idx + 1}
-                    </span>
+                    {/* Ghost Number - Fixed: Moved slightly inwards and made text smaller so it doesn't cut
+                    <span className="absolute bottom-2 right-6 text-[8rem] md:text-[14rem] font-black text-[#5ce1e6]/20 leading-none select-none z-0 pointer-events-none">
+                      {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
+                    </span> */}
+
+                    <div className="absolute top-6 right-6 flex flex-col gap-4 text-[#5ce1e6]/30">
+                        <Globe size={24} className="md:w-8 md:h-8" />
+                        <Layers size={24} className="md:w-8 md:h-8" />
+                    </div>
                   </div>
 
                 </div>
@@ -140,7 +180,6 @@ const GroupCompanies = () => {
               </div>
             </div>
           ))}
-
         </div>
       </div>
     </section>

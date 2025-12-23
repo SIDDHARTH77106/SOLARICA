@@ -1,59 +1,68 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const ServiceCard = ({ title, description, icon, index }) => {
+const ServiceCard = ({ title, description, icon, index, image }) => {
   return (
     <motion.div
       // 1. CINEMATIC 3D TILT ENTRANCE
-      // Starts pushed down (y: 50) and tilted back (rotateX: -15deg)
       initial={{ 
         opacity: 0, 
         y: 50, 
         rotateX: -15, 
         scale: 0.95 
       }}
-      // Animates to flat (rotateX: 0) and original position
       whileInView={{ 
         opacity: 1, 
         y: 0, 
         rotateX: 0, 
         scale: 1 
       }}
-      // Viewport settings: Triggers when card is slightly visible
       viewport={{ once: true, margin: "-100px" }}
       transition={{ 
         duration: 0.8, 
-        delay: index * 0.15, // Staggered delay for cinematic flow
+        delay: index * 0.15, 
         type: "spring", 
-        bounce: 0.3 // Slight bounce for realism
+        bounce: 0.3 
       }}
       
-      // 2. SOFTER HOVER (Light Theme Style)
-      // Instead of moving up, it breathes (scales) and casts a soft teal glow
+      // 2. HOVER EFFECT
       whileHover={{ 
         scale: 1.03, 
-        boxShadow: "0px 20px 40px -10px rgba(13, 148, 136, 0.2)" // Teal shadow
+        boxShadow: "0px 20px 40px -10px rgba(13, 148, 136, 0.3)" 
       }}
       
-      // Styling: White card to pop against the #e6e2d6 background
-      className="bg-white rounded-2xl p-8 flex flex-col gap-4 cursor-pointer relative overflow-hidden group h-full border border-gray-100"
-      style={{ transformStyle: "preserve-3d" }} // Essential for 3D effect
+      className="bg-white rounded-3xl flex flex-col cursor-pointer relative overflow-hidden group h-[400px] border border-gray-100 shadow-sm"
+      style={{ transformStyle: "preserve-3d" }}
     >
-      {/* Abstract Background Decoration (Appears on Hover) */}
-      <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-teal-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      {/* Icon Container */}
-      <div className="p-3 bg-teal-50 w-fit rounded-xl group-hover:bg-teal-100 transition-colors duration-300 z-10 text-teal-700">
-        {icon}
+      {/* --- Background Image Section --- */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={image} 
+          alt={title} 
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        {/* Overlay: Niche se dark gradient taaki white text dikhe, ya light overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b120f]/90 via-[#0b120f]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
       </div>
 
-      <h3 className="text-xl font-bold text-[#0b120f] z-10">
-        {title}
-      </h3>
-      
-      <p className="text-gray-500 leading-relaxed z-10 text-sm font-medium">
-        {description}
-      </p>
+      {/* --- Content Section --- */}
+      <div className="relative z-10 p-8 mt-auto flex flex-col gap-3">
+        {/* Icon Container */}
+        <div className="p-3 bg-teal-500/20 backdrop-blur-md w-fit rounded-xl mb-2 text-teal-400 border border-teal-500/30">
+          {icon}
+        </div>
+
+        <h3 className="text-2xl font-bold text-white tracking-tight">
+          {title}
+        </h3>
+        
+        <p className="text-gray-300 leading-relaxed text-sm font-medium line-clamp-3">
+          {description}
+        </p>
+
+        {/* Floating Decoration (On Hover) */}
+        <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-teal-400 rounded-full blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+      </div>
     </motion.div>
   );
 };
