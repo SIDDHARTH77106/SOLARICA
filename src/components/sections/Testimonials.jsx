@@ -1,10 +1,9 @@
 import React, { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import gsap from 'gsap';
-import { Draggable } from 'gsap/draggable';
-import { Quote, ArrowLeft, ArrowRight } from 'lucide-react';
+import { gsap } from 'gsap';
+import { Quote } from 'lucide-react';
 
-gsap.registerPlugin(Draggable);
+// NOTE: Draggable plugin removed to fix build error. 
+// This version uses pure GSAP for smooth infinite auto-scrolling.
 
 const testimonials = [
   {
@@ -49,35 +48,36 @@ const Testimonials = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    // 1. Calculate Width for Loop
-    const slider = sliderRef.current;
-    const cards = slider.children;
-    const cardWidth = cards[0].offsetWidth + 32; // card width + gap (32px)
-    const totalWidth = cardWidth * testimonials.length;
+    const ctx = gsap.context(() => {
+      const slider = sliderRef.current;
+      
+      // Calculate total width of one set of cards (including gap)
+      // Assuming card width 500px + gap 32px roughly, but let's measure first card if possible or just rely on total scrollWidth/3 since we tripled data
+      
+      const totalWidth = slider.scrollWidth / 3; 
 
-    // 2. Clone cards for seamless loop
-    // GSAP Setup
-    gsap.set(slider, { x: 0 });
+      // Infinite Scroll Animation
+      const anim = gsap.to(slider, {
+        x: `-=${totalWidth}`, // Move left by one set length
+        duration: 40,         // Slower for readability
+        ease: "none",
+        repeat: -1,
+        modifiers: {
+          x: gsap.utils.unitize(x => parseFloat(x) % totalWidth) // Resets position seamlessly
+        }
+      });
 
-    const anim = gsap.to(slider, {
-      x: `-${totalWidth}px`,
-      duration: 30, // Adjust speed (higher = slower)
-      ease: "none",
-      repeat: -1,
-      paused: false,
-    });
+      // Pause on Hover
+      slider.addEventListener("mouseenter", () => anim.pause());
+      slider.addEventListener("mouseleave", () => anim.play());
 
-    // Pause on Hover
-    slider.addEventListener("mouseenter", () => anim.pause());
-    slider.addEventListener("mouseleave", () => anim.play());
+    }, containerRef);
 
-    return () => {
-      anim.kill();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section id="testimonials" className="py-32 bg-[#0b120f] text-[#e6e2d6] overflow-hidden relative border-y border-white/5">
+    <section id="testimonials" ref={containerRef} className="py-32 bg-[#0b120f] text-[#e6e2d6] overflow-hidden relative border-y border-white/5">
       
       {/* --- HEADER --- */}
       <div className="container mx-auto px-6 mb-20 relative z-10">
@@ -93,13 +93,13 @@ const Testimonials = () => {
             
             {/* Decoration Line */}
             <div className="hidden md:block h-[1px] flex-grow bg-white/10 mx-12 relative top-[-20px]">
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#5ce1e6] rounded-full"></div>
+                <div className="absolute right-0 top-1/2 -translate-x-1/2 w-2 h-2 bg-[#5ce1e6] rounded-full"></div>
             </div>
         </div>
       </div>
 
       {/* --- SLIDER CONTAINER --- */}
-      <div ref={containerRef} className="w-full overflow-hidden relative pl-6 md:pl-24">
+      <div className="w-full overflow-hidden relative pl-6 md:pl-24">
         
         {/* FADE GRADIENTS FOR SMOOTH LOOK */}
         <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#0b120f] to-transparent z-20 pointer-events-none"></div>
@@ -108,13 +108,13 @@ const Testimonials = () => {
         {/* --- TRACK --- */}
         <div 
           ref={sliderRef} 
-          className="flex gap-8 w-max cursor-grab active:cursor-grabbing py-10"
+          className="flex gap-8 w-max py-10"
         >
-          {/* We render list TWICE for infinite loop illusion */}
+          {/* We render list THREE TIMES for seamless infinite loop */}
           {[...testimonials, ...testimonials, ...testimonials].map((item, idx) => (
             <div 
               key={idx}
-              className="w-[400px] md:w-[500px] shrink-0 bg-[#14201a] p-10 rounded-[3rem] border border-white/5 hover:border-[#5ce1e6]/30 transition-all duration-500 group relative flex flex-col justify-between"
+              className="w-[350px] md:w-[500px] shrink-0 bg-[#14201a] p-10 rounded-[3rem] border border-white/5 hover:border-[#5ce1e6]/30 transition-all duration-500 group relative flex flex-col justify-between"
             >
                {/* Quote Icon */}
                <div className="absolute top-10 right-10 text-[#5ce1e6]/10 group-hover:text-[#5ce1e6]/20 transition-colors">
@@ -127,7 +127,7 @@ const Testimonials = () => {
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#5ce1e6]">Verified Partner</span>
                  </div>
                  
-                 <p className="text-xl font-light text-white/70 leading-relaxed mb-8 relative z-10">
+                 <p className="text-lg md:text-xl font-light text-white/70 leading-relaxed mb-8 relative z-10">
                    "{item.text}"
                  </p>
                </div>
@@ -159,10 +159,10 @@ const Testimonials = () => {
       {/* --- LOGO STRIP (Bottom) --- */}
       <div className="container mx-auto px-6 mt-20 border-t border-white/5 pt-12">
          <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
-            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6]">VOLKSWAGEN</span>
-            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6]">ATLAS COPCO</span>
-            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6]">KPIT</span>
-            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6]">OGNIBENE</span>
+            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6] cursor-default">VOLKSWAGEN</span>
+            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6] cursor-default">ATLAS COPCO</span>
+            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6] cursor-default">KPIT</span>
+            <span className="font-black text-2xl tracking-tighter italic text-white hover:text-[#5ce1e6] cursor-default">OGNIBENE</span>
          </div>
       </div>
 
